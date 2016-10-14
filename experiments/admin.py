@@ -3,6 +3,7 @@ from django.contrib.admin.utils import unquote
 from django import forms
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
 from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
 from experiments.admin_utils import get_result_context
 from experiments.models import Experiment
 from experiments import conf
@@ -104,8 +105,8 @@ class ExperimentAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         experiment_urls = [
-            url(r'^set-alternative/$', self.admin_site.admin_view(self.set_alternative_view), name='experiment_admin_set_alternative'),
-            url(r'^set-state/$', self.admin_site.admin_view(self.set_state_view), name='experiment_admin_set_state'),
+            url(r'^set-alternative/$', self.admin_site.admin_view(csrf_exempt(self.set_alternative_view)), name='experiment_admin_set_alternative'),
+            url(r'^set-state/$', self.admin_site.admin_view(csrf_exempt(self.set_state_view)), name='experiment_admin_set_state'),
         ]
         return experiment_urls + super(ExperimentAdmin, self).get_urls()
 
