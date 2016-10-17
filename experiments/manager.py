@@ -16,7 +16,7 @@ class ExperimentManager(ModelDict):
         # Helper that uses self[...] so that the experiment is auto created where desired
         try:
             return self[experiment_name]
-        except KeyError:
+        except (KeyError, TypeError):
             return None
 
 
